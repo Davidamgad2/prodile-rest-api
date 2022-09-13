@@ -122,6 +122,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+# bos 3la al app w b3den ro7 ll model ali asmo user profile w ay auuth yba mnhom
+AUTH_USER_MODEL = 'challenges.UserProfile'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

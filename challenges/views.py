@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpRequest
 from django.urls import include, path
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import authentication, permissions, status
+from rest_framework import authentication, permissions, status,viewsets
 from challenges import serializer
 from django.contrib.auth.models import User
 
@@ -47,4 +47,55 @@ class Helloapiview (APIView):
     def delete(self,request,pk=None):
         """delete object on data base """
         return Response({'method':'DELETE'})
+
+
+class HelloViewSet(viewsets.ViewSet):
+    """test api viewset """
+
+    serializer_class=serializer.HelloSerializer
+
+    def list(request,self):
+        """return hello message"""
+        a_viewset=[
+            'uses actions (list,create,retreive,update,partial_update',
+            'automatically maps urls using router ',
+            'provides more functionality using less code',
+        ]
+        return Response({'message':'hello','a_viewset':a_viewset})
+
+    def create(self,requset):
+        """create a new hello message"""
+        serializer=self.serializer_class(data=requset.data)
+
+        if serializer.is_valid():
+            name=serializer.validated_data.get('name')
+            message=f'hello {name}'
+            return Response({'message':message})
+        else:
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+    def retrieve(self,request,pk=None):
+               """handle getting an object by its id """
+               return Response({'http_method':'GET'})
+
+    def update(self,request,pk=None):
+        """Handle and updating object"""
+        return Response({'http_method':'PUT'})
+
+    def partial_update(self,request,pk=None):
+        """handling partial update for the object"""
+        return Response({'http_method':'Patch'})
+
+    def destroy(self,request,pk=None):
+        """handling destroy the object""" 
+        return Response({'http_method':'Delete'})
+
+
+
+
+
+
 

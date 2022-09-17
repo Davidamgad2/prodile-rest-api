@@ -9,4 +9,4 @@ class updateownprofile(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        return obj.id == request.user.id ,super().has_object_permission
+        return obj.id == request.user.id 

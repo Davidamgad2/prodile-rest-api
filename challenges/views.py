@@ -2,12 +2,17 @@ from urllib import response
 from django.shortcuts import render
 from django.http import HttpResponse, HttpRequest
 from django.urls import include, path
+from django.contrib.auth.models import User
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions, status, viewsets,filters
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.settings import api_settings
+
 from challenges import serializer, models, permissions
-from django.contrib.auth.models import User
+
 
 # Create your views here.
 
@@ -104,3 +109,8 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.updateownprofile,)
     filter_backends=(filters.SearchFilter,)
     search_fields=('name','email',)
+
+class userloginapiview(ObtainAuthToken):
+    """handling  creating user auth token """
+    
+    renderer_classes=api_settings.DEFAULT_RENDERER_CLASSES

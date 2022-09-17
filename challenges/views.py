@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpRequest
 from django.urls import include, path
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import authentication, permissions, status, viewsets
+from rest_framework import authentication, permissions, status, viewsets,filters
 from rest_framework.authentication import TokenAuthentication
 from challenges import serializer, models, permissions
 from django.contrib.auth.models import User
@@ -101,4 +101,6 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = models.UserProfile.objects.all()
     # how the user will auth the mechanism and permission says how the user gets permission to do the certain things
     authentication_classes = (TokenAuthentication,)
-    permission_classes=(permissions.updateownprofile,)
+    permission_classes = (permissions.updateownprofile,)
+    filter_backends=(filters.SearchFilter,)
+    search_fields=('name','email',)

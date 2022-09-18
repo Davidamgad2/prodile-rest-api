@@ -1,6 +1,7 @@
 from unittest.util import _MAX_LENGTH
 from rest_framework import serializers
-from challenges import models
+#from challenges import models
+from . import models
 
 
 class HelloSerializer(serializers.Serializer):
@@ -36,5 +37,5 @@ class ProfileFeedItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.ProfileFeedItem
-        fields = ('id', 'user_profile', 'status_text', 'created_on')
+        fields = ('id', 'user_profile', 'status_text')
         extra_kwargs = {'user_profile': {'read_only': True}}

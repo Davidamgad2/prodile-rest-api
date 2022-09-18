@@ -61,7 +61,7 @@ class HelloViewSet(viewsets.ViewSet):
 
     serializer_class = serializer.HelloSerializer
 
-    def list(request, self):
+    def list(self,request):
         """return hello message"""
         a_viewset = [
             'uses actions (list,create,retreive,update,partial_update',
@@ -123,10 +123,10 @@ class UserProfileFeedViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     serializer_class = serializer.ProfileFeedItemSerializer
     queryset = models.ProfileFeedItem.objects.all()
-    permission_classes = (
-        permissions.updatepwnstatus,
-        IsAuthenticated
-    )
+    #permission_classes = (
+   #     permissions.updatepwnstatus,
+   #     IsAuthenticated
+   # )
 
     def perform_create(self, serializer):
         """Sets the user profile to the logged in user"""

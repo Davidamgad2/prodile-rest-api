@@ -6,10 +6,11 @@ from django.contrib.auth.models import User
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import authentication, permissions, status, viewsets,filters
+from rest_framework import authentication, permissions, status, viewsets, filters
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
+from rest_framework.permissions import IsAuthenticated
 
 from challenges import serializer, models, permissions
 
@@ -107,10 +108,26 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     # how the user will auth the mechanism and permission says how the user gets permission to do the certain things
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.updateownprofile,)
-    filter_backends=(filters.SearchFilter,)
-    search_fields=('name','email',)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name', 'email',)
+
 
 class userloginapiview(ObtainAuthToken):
     """handling  creating user auth token """
-    
-    renderer_classes=api_settings.DEFAULT_RENDERER_CLASSES
+
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+
+
+class UserProfileFeedViewSet(viewsets.ModelViewSet):
+    """Handles creating, reading and updating profile feed items"""
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = serializer.ProfileFeedItemSerializer
+    queryset = models.ProfileFeedItem.objects.all()
+    permission_classes = (
+        permissions.updatepwnstatus,
+        IsAuthenticated
+    )
+
+    def perform_create(self, serializer):
+        """Sets the user profile to the logged in user"""
+        serializer.save(user_profile=self.request.user)
